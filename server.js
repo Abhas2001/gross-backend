@@ -16,22 +16,36 @@ mongoose.connect('mongodb+srv://abhassinha98:IglZuzywqxsN9jEl@grocerrydata.wucab
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 
-let arr =[]
+
 app.post('/save',async(req,res)=>{
 
     const{itemName,Quantity,ExpiryDate} = req.body;
     const grocerrydata = new Grocery(req.body);
     await grocerrydata.save()
-     arr.push(req.body);
+   
      console.log(req.body); 
     res.send({
         message: `Item ${itemName} with quantity ${Quantity} and expiry date ${ExpiryDate} saved successfully!`
     });
 })
 app.get('/getdata',async(req,res)=>{
+    const keyword = req.query.search || ''
 
     const items = await Grocery.find();
-    res.send(items);
+    console.log(keyword, "items");
+    const arr = items.filter((x)=>x.itemName.includes(keyword))
+ 
+    res.send(arr);
+})
+
+app.delete('/delete',async(req,res)=>{
+
+    const id = req.query.id;
+console.log("id",id);
+
+    const deleteditem = await Grocery.findByIdAndDelete(id);
+
+    res.send({id, message: "Item deleted successfully!"});
 })
 
 app.listen(5002, () => {
