@@ -33,7 +33,7 @@ app.get('/getdata',async(req,res)=>{
 
     const items = await Grocery.find();
     console.log(keyword, "items");
-    const arr = items.filter((x)=>x.itemName.includes(keyword))
+    const arr = items.filter((x)=>x.itemName.toLowerCase().includes(keyword.toLowerCase()))
  
     res.send(arr);
 })
