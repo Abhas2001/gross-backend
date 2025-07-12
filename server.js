@@ -48,6 +48,13 @@ console.log("id",id);
     res.send({id, message: "Item deleted successfully!"});
 })
 
+app.get('/edit',async(req,res)=>{
+
+    const id = req.query.id;
+    const edititem = await Grocery.findById(id);
+    res.send(edititem)
+})
+
 app.listen(5002, () => {
   console.log('Server is running on port 5002');
 });
